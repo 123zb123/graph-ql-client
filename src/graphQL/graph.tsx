@@ -92,7 +92,7 @@ export default function ElementHighlights() {
   const [highlighted, setHighlighted] = React.useState('item');
   const [faded, setFaded] = React.useState('global');
 
-  const handleChartType = (event: any, newChartType: string) => {
+  const handleChartType = (_event: any, newChartType: string) => {
     if (newChartType !== null) {
       setChartType(newChartType);
     }

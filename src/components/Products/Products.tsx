@@ -20,7 +20,7 @@ import { AdminProductInterface } from "../../interface/interface";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import SkeletonTable from "../../pages/Skeleton";
-import './Products.css'; // Import your custom styled cell component
+import "./Products.css";
 import { useQuery } from "@apollo/client";
 import { GET_PRODUCTS } from "../../graphQL/graphqlProducts";
 
@@ -79,34 +79,37 @@ const Products: React.FC = () => {
               ...product,
               is_for_sale: !product.is_for_sale,
             };
-            const res = await axios.patch(`${apiUrl}/products/inventory/${productId}`, {
-              is_for_sale: updatedProduct.is_for_sale,
-            }, {
-              headers: {
-                Authorization: Cookies.get("token"),
+            const res = await axios.patch(
+              `${apiUrl}/products/inventory/${productId}`,
+              {
+                is_for_sale: updatedProduct.is_for_sale,
               },
-            });
+              {
+                headers: {
+                  Authorization: Cookies.get("token"),
+                },
+              }
+            );
             console.log(res);
 
             return updatedProduct;
           }
           return product;
-        }))
+        })
+      );
 
       setProducts(updatedProducts);
     } catch (error) {
-      console.error('Error updating is_for_sale property:', error);
+      console.error("Error updating is_for_sale property:", error);
     }
   };
-
-
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (!error) {
           setTimeout(() => {
-            setloadingData(false)
+            setloadingData(false);
           }, 2000);
           setProducts(data.getProducts.products);
           setFilteredProducts(data.getProducts.products);
@@ -136,27 +139,27 @@ const Products: React.FC = () => {
             sortOption === "name"
               ? a.name
               : sortOption === "sale_price"
-                ? parseFloat(String(a.name))
-                : sortOption === "discount_percentage"
-                  ? parseFloat(String(a.discount_percentage))
-                  : sortOption === "description"
-                    ? a.description
-                    : sortOption === "quantity"
-                      ? a.quantity
-                      : 0;
+              ? parseFloat(String(a.name))
+              : sortOption === "discount_percentage"
+              ? parseFloat(String(a.discount_percentage))
+              : sortOption === "description"
+              ? a.description
+              : sortOption === "quantity"
+              ? a.quantity
+              : 0;
 
           const valueB =
             sortOption === "name"
               ? b.name
               : sortOption === "sale_price"
-                ? parseFloat(String(b.sale_price))
-                : sortOption === "discount_percentage"
-                  ? parseFloat(String(b.discount_percentage))
-                  : sortOption === "description"
-                    ? b.description
-                    : sortOption === "quantity"
-                      ? b.quantity
-                      : 0;
+              ? parseFloat(String(b.sale_price))
+              : sortOption === "discount_percentage"
+              ? parseFloat(String(b.discount_percentage))
+              : sortOption === "description"
+              ? b.description
+              : sortOption === "quantity"
+              ? b.quantity
+              : 0;
 
           if (typeof valueA === "number" && typeof valueB === "number") {
             return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
@@ -189,8 +192,8 @@ const Products: React.FC = () => {
 
   return (
     <Box>
-
-      <Typography component="div"
+      <Typography
+        component="div"
         style={{
           backgroundColor: "gray",
           display: "flex",
@@ -206,7 +209,6 @@ const Products: React.FC = () => {
         <div style={{ display: "flex", alignItems: "center" }}>
           <TextField
             placeholder="Search products..."
-
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             InputProps={{
@@ -248,7 +250,7 @@ const Products: React.FC = () => {
             sx={{
               color: "white",
               borderRadius: "5px",
-              backgroundColor: "#aaaaaa",// Adjust the color code as needed
+              backgroundColor: "#aaaaaa", // Adjust the color code as needed
               height: "40px",
               marginLeft: "5px", // Adding margin for better spacing
             }}
@@ -302,6 +304,21 @@ const Products: React.FC = () => {
           >
             Add Product
           </Button>
+        </div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Button
+            onClick={() => navigate("/erp/graph")}
+            style={{
+              padding: "8px",
+              borderRadius: "15px",
+              backgroundColor: "black",
+              color: "white",
+              height: "40px",
+              marginLeft: "10px",
+            }}
+          >
+            users charts
+          </Button>
           <Button
             onClick={() => navigate("/erp/Recharts")}
             style={{
@@ -318,8 +335,8 @@ const Products: React.FC = () => {
 
           <Button
             onClick={() => {
-              Cookies.remove('token')
-              navigate("/")
+              Cookies.remove("token");
+              navigate("/");
             }}
             style={{
               padding: "8px",
@@ -341,7 +358,10 @@ const Products: React.FC = () => {
       ) : (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead style={{ position: 'sticky', top: 0 }} className="TableStickyHeader">
+            <TableHead
+              style={{ position: "sticky", top: 0 }}
+              className="TableStickyHeader"
+            >
               <TableRow>
                 <StyledTableCell>Id</StyledTableCell>
                 <StyledTableCell>Name</StyledTableCell>
@@ -359,9 +379,8 @@ const Products: React.FC = () => {
             <TableBody>
               {filteredProducts.map((product) => (
                 <StyledTableRow
-                  key={product.product_id || ''} 
-                  onClick={() => handleProductClick(product.product_id)
-                  }
+                  key={product.product_id || ""}
+                  onClick={() => handleProductClick(product.product_id)}
                 >
                   <StyledTableCell component="th" scope="row">
                     {product.product_id || "No Name"}
@@ -384,9 +403,7 @@ const Products: React.FC = () => {
                   <StyledTableCell align="right">
                     <Typography
                       component="div"
-                      onMouseEnter={() =>
-                        setHoveredImage(product.image_url)
-                      }
+                      onMouseEnter={() => setHoveredImage(product.image_url)}
                       onMouseLeave={() => setHoveredImage(null)}
                       style={{ position: "relative" }}
                     >
