@@ -302,6 +302,19 @@ const Products: React.FC = () => {
           >
             Add Product
           </Button>
+          <Button
+            onClick={() => navigate("/erp/Recharts")}
+            style={{
+              padding: "8px",
+              borderRadius: "15px",
+              backgroundColor: "black",
+              color: "white",
+              height: "40px",
+              marginLeft: "10px",
+            }}
+          >
+            Go to Recharts
+          </Button>
 
           <Button
             onClick={() => {

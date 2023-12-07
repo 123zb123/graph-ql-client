@@ -8,6 +8,8 @@ import AddProduct from "./components/AddProduct/AddProduct";
 import Product from "./components/Product/Product";
 import EditProduct from "./components/EditProduct/EditProduct";
 import ElementHighlights from "./graphQL/graph";
+import Recharts from "./components/Rechrts/Rechrts"
+
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
 
@@ -26,6 +28,7 @@ function App() {
           <Route path="/erp/graph" element={<ElementHighlights />} />
           <Route path="/erp" element={<Layout />}>
             <Route path="/erp/Products" element={<Products />} />
+            <Route path="/erp/Recharts" element={<Recharts />} />
 
             <Route path="/erp/Product/:id" element={<Product />} />
             <Route path="/erp/AddProduct" element={<AddProduct />} />
