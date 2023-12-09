@@ -111,6 +111,7 @@ const Products: React.FC = () => {
           setTimeout(() => {
             setloadingData(false);
           }, 2000);
+
           setProducts(data.getProducts.products);
           setFilteredProducts(data.getProducts.products);
         }
@@ -183,7 +184,9 @@ const Products: React.FC = () => {
   }, [sortOption, sortOrder]);
 
   const handleProductClick = (productId: string | undefined) => {
-    navigate(`/erp/Product/${productId}`);
+    console.log(productId);
+    
+    navigate(`/erp/Product/${productId}`);    
   };
 
   const handleAddProduct = async () => {
@@ -379,7 +382,7 @@ const Products: React.FC = () => {
             <TableBody>
               {filteredProducts.map((product) => (
                 <StyledTableRow
-                  key={product.product_id || ""}
+                  key={product.product_id}
                   onClick={() => handleProductClick(product.product_id)}
                 >
                   <StyledTableCell component="th" scope="row">

@@ -7,7 +7,7 @@ import Products from "./components/Products/Products";
 import AddProduct from "./components/AddProduct/AddProduct";
 import Product from "./components/Product/Product";
 import EditProduct from "./components/EditProduct/EditProduct";
-import ElementHighlights from "./graphQL/graph";
+import ElementHighlights from "./components/Rechrts/graph";
 import Recharts from "./components/Rechrts/Rechrts"
 
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
