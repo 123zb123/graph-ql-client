@@ -14,12 +14,9 @@ import { Container } from "@mui/material";
 import { useForm } from "react-hook-form";
 import LinearWithValueLabel from "../../pages/LinearProgressWithLabel";
 import { AdminProductInterface } from "../../interface/interfaceEditProduct";
-import { ProductData } from "../../interface/interfaceAddProduct";
 import { Input } from '@mui/material';
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_PRODUCT_BY_ID, UPDATE_PRODUCT } from "../../graphQL/graphqlProducts";
-
-const apiUrl = import.meta.env.VITE_BASE_URL;
 
 function EditProduct() {
   const { id } = useParams();
