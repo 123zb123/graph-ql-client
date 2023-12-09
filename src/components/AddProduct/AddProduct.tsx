@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { AdminProductInterface } from "../../interface/interfaceAddProduct";
-import { AxiosError } from 'axios';
 import LinearWithValueLabel from "../../pages/LinearProgressWithLabel";
 import { ApolloError, useMutation } from "@apollo/client";
 import { ADD_PRODUCT } from "../../graphQL/graphqlProducts";
@@ -24,11 +23,6 @@ import { ADD_PRODUCT } from "../../graphQL/graphqlProducts";
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 console.log(`API Base URL: ${apiUrl}`);
-
-interface YourResponseType {
-  message: string;
-  // other properties...
-}
 
 function AddProduct() {
   const navigate = useNavigate();
@@ -83,15 +77,15 @@ function AddProduct() {
     try {
       const requestData = {
         name: data.name,
-        sale_price: parseFloat(data.sale_price),
-        quantity: parseInt(data.quantity),
+        sale_price: parseFloat(data.sale_price.toString()),
+        quantity: parseInt(data.quantity.toString()),
         description: data.description,
         category: data.category,
-        discount_percentage: parseFloat(data.discount_percentage),
+        discount_percentage: parseFloat(data.discount_percentage.toString()),
         image_url: image,
         image_alt: data.image_alt,
         is_for_sale: isForSale,
-        cost_price: parseFloat(data.cost_price),
+        cost_price: parseFloat(data.cost_price.toString()),
         supplier: data.supplier,
       };
       console.log("Request Data:", requestData);
