@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import Cookies from "js-cookie";
 import axios from "axios";
 import InputLabel from "@mui/material/InputLabel";
 import {
@@ -18,6 +17,8 @@ import { useState } from "react";
 import { AdminProductInterface } from "../../interface/interfaceAddProduct";
 import { AxiosError } from 'axios';
 import LinearWithValueLabel from "../../pages/LinearProgressWithLabel";
+import { ApolloError, useMutation } from "@apollo/client";
+import { ADD_PRODUCT } from "../../graphQL/graphqlProducts";
 
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
@@ -42,6 +43,7 @@ function AddProduct() {
   const [isAlertSuccess, setIsAlertSuccess] = useState<boolean | null>(null);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
+  const [addProduct] = useMutation(ADD_PRODUCT)
 
   const handleChangeCheckbox = () => {
     setIsForSale(!isForSale);
@@ -81,35 +83,28 @@ function AddProduct() {
     try {
       const requestData = {
         name: data.name,
-        sale_price: data.sale_price,
-        quantity: data.quantity,
+        sale_price: parseFloat(data.sale_price),
+        quantity: parseInt(data.quantity),
         description: data.description,
         category: data.category,
-        discount_percentage: data.discount_percentage,
+        discount_percentage: parseFloat(data.discount_percentage),
         image_url: image,
         image_alt: data.image_alt,
         is_for_sale: isForSale,
-        cost_price: data.cost_price,
+        cost_price: parseFloat(data.cost_price),
         supplier: data.supplier,
       };
-      console.log(requestData);
+      console.log("Request Data:", requestData);
+      console.log('Sale Price:',typeof data.sale_price);
+      const response = await addProduct({
+        variables: {
+          product: requestData,
+        },
+      });
 
-      const response = await axios.post(
-
-        `${apiUrl}/products/inventory`,
-
-        // `https://erp-beak1-6.onrender.com/api/products/inventory`,
-        requestData,
-        {
-          headers: {
-            Authorization: Cookies.get("token"),
-          },
-        }
-      );
-
-
+      console.log("Apollo Client Response:", response.data);
+      
       navigate(`/erp/products`);
-      console.log(response);
 
       setIsAlertSuccess(true);
       setAlertMessage("Product added successfully!");
@@ -119,13 +114,16 @@ function AddProduct() {
       }, 2000);
 
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError<YourResponseType>;
-        if (axiosError.response) {
+      console.error("Error:", error);
+      if (error instanceof ApolloError) {
+        const apolloError = error as ApolloError;
+        if (apolloError.graphQLErrors.length > 0) {
           setIsAlertSuccess(false);
-          setAlertMessage(axiosError.response.data.message + ", please try again or later.");
+          setAlertMessage(apolloError.graphQLErrors[0].message + ", please try again or later.");
         } else {
           setIsAlertSuccess(false);
+          console.log('Error: ' + apolloError.graphQLErrors);
+          
           setAlertMessage("Error adding the product. Please try again or later.");
         }
       } else {
@@ -134,10 +132,8 @@ function AddProduct() {
       }
     } finally {
       setUploading(false);
-
     }
-  }
-
+  };
   return (
     <Container>
       <Typography variant="h4">Add Product</Typography>
