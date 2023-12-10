@@ -31,7 +31,7 @@ function Footer() {
               <br />
               Yishay Ainouze
               <br />
-              Nehorai
+              NehoraiYaphe
               <br />
               Zvika Berkovich
 
