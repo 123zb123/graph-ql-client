@@ -1,4 +1,3 @@
-import axios from "axios";
 import Cookies from "js-cookie";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -21,10 +20,8 @@ import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import SkeletonTable from "../../pages/Skeleton";
 import "./Products.css";
-import { useQuery } from "@apollo/client";
-import { GET_PRODUCTS } from "../../graphQL/graphqlProducts";
-
-const apiUrl = import.meta.env.VITE_BASE_URL;
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_PRODUCTS, UPDATE_PRODUCT } from "../../graphQL/graphqlProducts";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -62,6 +59,8 @@ const Products: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<string>("asc");
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
   const { loading, error, data } = useQuery(GET_PRODUCTS);
+  const [updateProduct] = useMutation(UPDATE_PRODUCT)
+
   const handleSortChange = (option: string) => {
     if (option === sortOption) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -75,34 +74,29 @@ const Products: React.FC = () => {
       const updatedProducts = await Promise.all(
         products.map(async (product) => {
           if (product.product_id === productId) {
-            const updatedProduct = {
-              ...product,
-              is_for_sale: !product.is_for_sale,
-            };
-            const res = await axios.patch(
-              `${apiUrl}/products/inventory/${productId}`,
-              {
-                is_for_sale: updatedProduct.is_for_sale,
+            const updatedProduct = { ...product, is_for_sale: !product.is_for_sale };
+            console.log(updatedProduct);
+            
+            const res = await updateProduct({
+              variables: {
+                id: updatedProduct.product_id,
+                product: updatedProduct,
               },
-              {
-                headers: {
-                  Authorization: Cookies.get("token"),
-                },
-              }
-            );
-            console.log(res);
-
+            });
+            console.log(res.data);
+  
             return updatedProduct;
           }
           return product;
         })
       );
-
+  
       setProducts(updatedProducts);
     } catch (error) {
       console.error("Error updating is_for_sale property:", error);
     }
   };
+  
 
   useEffect(() => {
     const fetchData = async () => {
