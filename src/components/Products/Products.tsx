@@ -101,12 +101,12 @@ const Products: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!error) {
+        if (data) {
           setTimeout(() => {
             setloadingData(false);
           }, 2000);
-
-          setProducts(data.getProducts.products);
+          
+          setProducts(data.getProducts.products);          
           setFilteredProducts(data.getProducts.products);
         }
       } catch (error) {
