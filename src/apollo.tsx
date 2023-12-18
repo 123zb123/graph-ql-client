@@ -3,7 +3,7 @@ import { removeTypenameFromVariables } from '@apollo/client/link/remove-typename
 import Cookies from 'js-cookie';
 
 const removeTypenameLink = removeTypenameFromVariables();
-const BASE_URI = import.meta.env.VITE_SERVER_HOST || "http://localhost:4000";
+const BASE_URI = import.meta.env.VITE_BASE_URL
 
 // Create an HTTP link
 const httpLink = createHttpLink({
@@ -12,17 +12,21 @@ const httpLink = createHttpLink({
 const linka = from([removeTypenameLink, httpLink]);
 
 const authMiddleware = new ApolloLink((operation, forward) => {
-    const token = Cookies.get('token');
+  const token = Cookies.get('token');
+  console.log(token);
+
   operation.setContext({
     headers: {
-        Authorization : token , // Add the token as 'Bearer <token>'
+      Authorization: token,
     },
   });
   return forward(operation);
 });
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 const client = new ApolloClient({
-  link: authMiddleware.concat(linka), 
+  uri: apiUrl,
+  link: authMiddleware.concat(linka),
   cache: new InMemoryCache(),
 });
 export default client;
