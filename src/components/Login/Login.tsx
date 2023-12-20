@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -13,9 +13,21 @@ import { FormData } from "../../interface/interface";
 import { Alert, RegisterFormStyle } from "./LoginStyle";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../../graphQL/graphqUsers";
+// import { USER_CREATED } from "../../graphQL/subscriptions";
+import { USER_LOGIN } from "../../graphQL/subscriptions";
+import { useSubscription } from "@apollo/client";
 
-const Login = () => {
+const Login =  () => {
 
+  const { data } =  useSubscription(USER_LOGIN);
+  console.log('Data:', data);
+
+
+
+  useEffect(  () => {
+    // Logging data and errors
+    console.log('Data:', data);
+  }, [data]);
 
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<FormData>();
@@ -32,12 +44,12 @@ const Login = () => {
           password: data.password,
         }
       });
-      
+
       if (response.data?.loginUser.status === 200) {
         const token = response.data?.loginUser.token
-        console.log('status : ' + response.data?.loginUser.status ,' , token : '+ token);
-        
-        Cookies.set("token", token, { expires : 1 });
+        // console.log('status : ' + response.data?.loginUser.status ,' , token : '+ token);
+
+        Cookies.set("token", token, { expires: 1 });
 
         setOpen(true);
         setTimeout(() => {

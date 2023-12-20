@@ -10,15 +10,15 @@ import EditProduct from "./components/EditProduct/EditProduct";
 import ElementHighlights from "./components/Rechrts/graph";
 import Recharts from "./components/Rechrts/Rechrts"
 
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+// import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
 
 
 function App() {
-  if ("__DEV__") {  // Adds messages only in a dev environment
-    loadDevMessages();
-    loadErrorMessages();
-  }
+  // if ("__DEV__") {  // Adds messages only in a dev environment
+  //   loadDevMessages();
+  //   loadErrorMessages();
+  // }
   return (
     <div>
       <BrowserRouter>

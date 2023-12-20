@@ -17,9 +17,9 @@ import { Typography } from "@mui/material";
 import { REGISTER_USER } from "../../graphQL/graphqUsers";
 import { useMutation } from "@apollo/client";
 
-const apiUrl = import.meta.env.VITE_BASE_URL;
+// const apiUrl = import.meta.env.VITE_BASE_URL;
 
-console.log(`API Base URL: ${apiUrl}`);
+// console.log(`API Base URL: ${apiUrl}`);
 
 const RegisterFormStyle: React.CSSProperties = {
   display: "flex",
@@ -66,10 +66,10 @@ const SignUp = () => {
           password: data.password,
         },
       });
-      console.log(response.data);
+      // console.log(response.data);
 
       if (response.data) {
-        console.log("Registration successful");
+        // console.log("Registration successful");
         setLoginSuccess(true);
         setOpen(true);
         setTimeout(() => {
@@ -118,7 +118,7 @@ const SignUp = () => {
 
         <Grid item xs={12} md={6}>
           <Card style={{ backgroundColor: "rgba(255, 255, 255, 0.8)" }}>
-          <Typography variant="h4">SignUp</Typography>
+            <Typography variant="h4">SignUp</Typography>
 
             <CardContent>
               <Box
